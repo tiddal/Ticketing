@@ -1,9 +1,13 @@
 import 'bootstrap/dist/css/bootstrap.css';
 import { buildClient } from '../api/build-client';
+import { Header } from '../components/Header';
 
 const AppComponent = ({ Component, pageProps }) => {
   return (
-    <Component {...pageProps} />
+    <div>
+      <Header {...pageProps} />
+      <Component {...pageProps} />
+    </div>
   );
 };
 
