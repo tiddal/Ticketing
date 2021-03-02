@@ -1,5 +1,5 @@
+import { currentUser } from '@tiddal/ticketing-common';
 import { Router } from 'express';
-import { currentUser } from '../middlewares/current-user';
 
 const router = Router();
 

@@ -2,12 +2,12 @@ import express, { json } from 'express';
 import 'express-async-errors';
 import cookieSession from 'cookie-session';
 
-import { NotFoundError } from './errors/not-found-error';
-import { errorHandler } from './middlewares/error-handler';
+
 import { currentUserRouter } from './routes/current-user';
 import { signInRouter } from './routes/sign-in';
 import { signOutRouter } from './routes/sign-out';
 import { signUpRouter } from './routes/sign-up';
+import { errorHandler, NotFoundError } from '@tiddal/ticketing-common';
 
 const app = express();
 app.set('trust proxy', true);
