@@ -13,7 +13,7 @@ const errorHandler = (
   }
 
   response.status(400).send({
-    errors: [{ message: 'Sorry, something went wrong.' }]
+    errors: [{ message: `Sorry, something went wrong: ${error}` }]
   });
 
 };
