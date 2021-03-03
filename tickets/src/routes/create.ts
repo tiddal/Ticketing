@@ -29,6 +29,7 @@ router.post('/api/tickets', requireAuth,
     await ticket.save();
 
     response.status(201).send(ticket);
-  });
+  }
+);
 
 export { router as createTicketRouter };

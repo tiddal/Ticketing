@@ -5,6 +5,7 @@ import { currentUser, errorHandler, NotFoundError } from '@tiddal/ticketing-comm
 import { createTicketRouter } from './routes/create';
 import { showTicketRouter } from './routes/show';
 import { indexTicketRouter } from './routes';
+import { updateTicketRouter } from './routes/update';
 
 
 
@@ -20,6 +21,7 @@ app.use(currentUser);
 app.use(createTicketRouter);
 app.use(showTicketRouter);
 app.use(indexTicketRouter);
+app.use(updateTicketRouter);
 app.all('*', async () => { throw new NotFoundError(); });
 app.use(errorHandler);
 
