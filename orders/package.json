@@ -1,0 +1,31 @@
+{
+  "name": "orders",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "ts-node-dev --poll src/index.ts",
+    "test": "jest --watchAll --no-cache"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@tiddal/ticketing-common": "^1.0.5",
+    "@types/express": "^4.17.11",
+    "express": "^4.17.1",
+    "express-async-errors": "^3.1.1",
+    "express-validator": "^6.10.0",
+    "mongoose": "^5.11.18",
+    "ts-node-dev": "^1.1.6",
+    "typescript": "^4.2.2"
+  },
+  "devDependencies": {
+    "@types/jest": "^26.0.20",
+    "@types/supertest": "^2.0.10",
+    "jest": "^26.6.3",
+    "mongodb-memory-server": "^6.9.3",
+    "supertest": "^6.1.3",
+    "ts-jest": "^26.5.3"
+  }
+}
