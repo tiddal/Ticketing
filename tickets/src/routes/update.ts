@@ -1,7 +1,10 @@
-import { NotFoundError, requireAuth, UnauthorizedError, validateRequest } from '@tiddal/ticketing-common';
+import { DatabaseConnectionError, NotFoundError, requireAuth, UnauthorizedError, validateRequest } from '@tiddal/ticketing-common';
 import { Router, Request, Response } from 'express';
 import { body } from 'express-validator';
+import { startSession } from 'mongoose';
+import { TicketUpdatedPublisher } from '../events/publishers/ticket-updated-publisher';
 import { Ticket } from '../models/ticket';
+import { natsWrapper } from '../nats-wrapper';
 
 const router = Router();
 
@@ -20,11 +23,29 @@ router.put('/api/tickets/:id', requireAuth,
     const ticket = await Ticket.findById(id);
     if (!ticket) throw new NotFoundError();
     if (ticket.userId !== request.user!.id) throw new UnauthorizedError();
+
     ticket.set({
       title: request.body.title,
       price: request.body.price
     });
-    await ticket.save();
+
+    const session = await startSession();
+    session.startTransaction();
+    try {
+      await ticket.save();
+      await new TicketUpdatedPublisher(natsWrapper.client).publish({
+        id: ticket.id,
+        title: ticket.title,
+        price: ticket.price,
+        userId: ticket.userId
+      });
+      await session.commitTransaction();
+    } catch (error) {
+      await session.abortTransaction();
+      throw new DatabaseConnectionError();
+    } finally {
+      session.endSession();
+    }
     response.send(ticket);
   }
 );
