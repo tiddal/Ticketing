@@ -1,4 +1,5 @@
 import { Schema, Document, model } from 'mongoose';
+import { updateIfCurrentPlugin } from 'mongoose-update-if-current';
 
 interface TicketAttributes {
   title: string;
@@ -6,7 +7,7 @@ interface TicketAttributes {
   userId: string;
 }
 
-type TicketDocument = Document & TicketAttributes;
+type TicketDocument = Document & TicketAttributes & { version: number; };
 
 const ticketSchema = new Schema<TicketDocument>(
   {
@@ -28,11 +29,13 @@ const ticketSchema = new Schema<TicketDocument>(
       transform(doc, ret) {
         ret.id = ret._id;
         delete ret._id;
-        delete ret.__v;
       }
     }
   }
 );
+
+ticketSchema.set('versionKey', 'version');
+ticketSchema.plugin(updateIfCurrentPlugin);
 
 const TicketModel = model<TicketDocument>('Ticket', ticketSchema);
 
