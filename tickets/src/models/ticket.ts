@@ -9,6 +9,7 @@ interface TicketAttributes {
 
 interface TicketDocument extends Document, TicketAttributes {
   version: number;
+  orderId?: string;
 };
 
 const ticketSchema = new Schema(
@@ -24,6 +25,9 @@ const ticketSchema = new Schema(
     userId: {
       type: String,
       required: true
+    },
+    orderId: {
+      type: String
     }
   },
   {
