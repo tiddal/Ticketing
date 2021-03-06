@@ -1,6 +1,7 @@
 import { OrderStatus } from '@tiddal/ticketing-common';
 import { Schema, Document, model } from 'mongoose';
 import { TicketDocument } from './ticket';
+import { updateIfCurrentPlugin } from 'mongoose-update-if-current';
 
 interface OrderAttributes {
   userId: string;
@@ -9,9 +10,11 @@ interface OrderAttributes {
   ticket: TicketDocument;
 }
 
-type OrderDocument = Document & OrderAttributes;
+type OrderDocument = Document & OrderAttributes & {
+  version: number;
+};
 
-const orderSchema = new Schema<OrderDocument>(
+const orderSchema = new Schema(
   {
     userId: {
       type: String,
@@ -41,6 +44,9 @@ const orderSchema = new Schema<OrderDocument>(
     }
   }
 );
+
+orderSchema.set('versionKey', 'version');
+orderSchema.plugin(updateIfCurrentPlugin);
 
 const OrderModel = model<OrderDocument>('Order', orderSchema);
 

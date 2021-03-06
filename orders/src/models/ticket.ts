@@ -1,6 +1,7 @@
 import { OrderStatus } from '@tiddal/ticketing-common';
 import { Schema, Document, model } from 'mongoose';
 import { Order } from './order';
+import { updateIfCurrentPlugin } from 'mongoose-update-if-current';
 
 interface TicketAttributes {
   _id: string;
@@ -9,10 +10,11 @@ interface TicketAttributes {
 }
 
 export type TicketDocument = Document & TicketAttributes & {
+  version: number;
   isReserved(): Promise<boolean>;
 };
 
-const ticketSchema = new Schema<TicketDocument>(
+const ticketSchema = new Schema(
   {
     title: {
       type: String,
@@ -28,11 +30,13 @@ const ticketSchema = new Schema<TicketDocument>(
       transform(doc, ret) {
         ret.id = ret._id;
         delete ret._id;
-        delete ret.__v;
       }
     }
   }
 );
+
+ticketSchema.set('versionKey', 'version');
+ticketSchema.plugin(updateIfCurrentPlugin);
 
 const TicketModel = model<TicketDocument>('Ticket', ticketSchema);
 
