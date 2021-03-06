@@ -7,9 +7,11 @@ interface TicketAttributes {
   userId: string;
 }
 
-type TicketDocument = Document & TicketAttributes & { version: number; };
+interface TicketDocument extends Document, TicketAttributes {
+  version: number;
+};
 
-const ticketSchema = new Schema<TicketDocument>(
+const ticketSchema = new Schema(
   {
     title: {
       type: String,
