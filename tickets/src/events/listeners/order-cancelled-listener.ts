@@ -1,17 +1,17 @@
-import { Listener, OrderCreatedEvent, Subject } from '@tiddal/ticketing-common';
+import { Listener, OrderCancelledEvent, Subject } from '@tiddal/ticketing-common';
 import { queueGroupName } from './queue-group-name';
 import { Message } from 'node-nats-streaming';
 import { Ticket } from '../../models/ticket';
 import { TicketUpdatedPublisher } from '../publishers/ticket-updated-publisher';
 
-class OrderCreatedListener extends Listener<OrderCreatedEvent> {
-  readonly subject = Subject.ORDER_CREATED;
-  queueGroupName = queueGroupName;
 
-  async onMessage(data: OrderCreatedEvent['data'], message: Message) {
+class OrderCancelledListener extends Listener<OrderCancelledEvent> {
+  readonly subject = Subject.ORDER_CANCELLED;
+  queueGroupName = queueGroupName;
+  async onMessage(data: OrderCancelledEvent['data'], message: Message) {
     const ticket = await Ticket.findById(data.ticket.id);
     if (!ticket) throw new Error('Ticket not found');
-    ticket.set({ orderId: data.id });
+    ticket.set({ orderId: undefined });
     await ticket.save();
     await new TicketUpdatedPublisher(this.client).publish({
       id: ticket.id,
@@ -25,4 +25,4 @@ class OrderCreatedListener extends Listener<OrderCreatedEvent> {
   }
 }
 
-export { OrderCreatedListener };
+export { OrderCancelledListener };

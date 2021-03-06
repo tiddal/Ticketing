@@ -1,4 +1,4 @@
-import { DatabaseConnectionError, NotFoundError, requireAuth, UnauthorizedError, validateRequest } from '@tiddal/ticketing-common';
+import { BadRequestError, DatabaseConnectionError, NotFoundError, requireAuth, UnauthorizedError, validateRequest } from '@tiddal/ticketing-common';
 import { Router, Request, Response } from 'express';
 import { body } from 'express-validator';
 import { startSession } from 'mongoose';
@@ -23,6 +23,7 @@ router.put('/api/tickets/:id', requireAuth,
     const ticket = await Ticket.findById(id);
     if (!ticket) throw new NotFoundError();
     if (ticket.userId !== request.user!.id) throw new UnauthorizedError();
+    if (ticket.orderId) throw new BadRequestError('Cannot edit a reserved ticket');
 
     ticket.set({
       title: request.body.title,
