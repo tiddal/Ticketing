@@ -3,6 +3,7 @@ import { Schema, Document, model } from 'mongoose';
 import { Order } from './order';
 
 interface TicketAttributes {
+  _id: string;
   title: string;
   price: number;
 }
