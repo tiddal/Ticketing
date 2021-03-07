@@ -32,7 +32,7 @@ router.post(
       source: token
     });
 
-    response.send({ success: true });
+    response.status(201).send({ success: true });
   }
 );
 
