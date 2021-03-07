@@ -1,6 +1,8 @@
 const stripe = {
   charges: {
-    create: jest.fn().mockResolvedValue({})
+    create: jest.fn().mockResolvedValue({
+      id: 'randomStripeId'
+    })
   }
 };
 
