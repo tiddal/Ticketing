@@ -12,7 +12,7 @@ const Orders = ({ orders }: OrdersProps): JSX.Element => {
       <h1>My Orders</h1>
       <ul>
         {orders.map((order) => (
-          <li>{order.ticket.title} - {order.status}</li>
+          <li key={order.id}>{order.ticket.title} - {order.status}</li>
         ))}
       </ul>
     </div>
