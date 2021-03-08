@@ -1,4 +1,5 @@
 import { GetServerSideProps } from 'next';
+import Router from 'next/router';
 import { api } from '../../api';
 import { IOrder } from '../../entities/IOrder';
 import { ITicket } from '../../entities/ITicket';
@@ -16,7 +17,7 @@ const Ticket = ({ ticket }: TicketProps): JSX.Element => {
     body: {
       ticketId: ticket.id
     },
-    onSuccess: (order: IOrder) => console.log(order)
+    onSuccess: (order: IOrder) => Router.push('/orders/[orderId]', `/orders/${order.id}`)
   });
 
   return (
