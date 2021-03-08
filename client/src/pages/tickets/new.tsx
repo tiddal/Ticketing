@@ -1,14 +1,7 @@
 import Router from 'next/router';
 import { FormEvent, useState } from 'react';
+import { ITicket } from '../../entities/ITicket';
 import { useRequest } from '../../hooks/use-request';
-
-interface TicketAttributes {
-  id: string;
-  price: number;
-  title: string;
-  userId: string;
-  version: number;
-}
 
 const NewTicket = (): JSX.Element => {
 
@@ -20,7 +13,7 @@ const NewTicket = (): JSX.Element => {
     body: {
       title, price
     },
-    onSuccess: (ticket: TicketAttributes) => Router.push(`/tickets/${ticket.id}`)
+    onSuccess: (ticket: ITicket) => Router.push(`/tickets/${ticket.id}`)
   });
 
   const sanitizePrice = () => {

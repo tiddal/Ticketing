@@ -1,33 +1,23 @@
-import axios from 'axios';
 import { GetServerSideProps } from 'next';
+import Link from 'next/link';
 import { api } from '../api';
-
-interface TicketAttributes {
-  id: string;
-  price: number;
-  title: string;
-  userId: string;
-  version: number;
-}
-
-interface UserAttributes {
-  id: string;
-  email: string;
-  iat: number;
-}
+import { ITicket } from '../entities/ITicket';
 
 interface HomeProps {
-  currentUser: UserAttributes;
-  tickets: TicketAttributes[];
+  tickets: ITicket[];
 }
 
-const Home = ({ currentUser, tickets }: HomeProps): JSX.Element => {
-  console.log(currentUser);
+const Home = ({ tickets }: HomeProps): JSX.Element => {
 
   const renderTicketsList = tickets.map((ticket) => (
     <tr key={ticket.id}>
       <td>{ticket.title}</td>
       <td>{ticket.price}</td>
+      <th>
+        <Link href="/tickets/[ticketId]" as={`/tickets/${ticket.id}`}>
+          <a>Purchase</a>
+        </Link>
+      </th>
     </tr>
   ));
 
@@ -39,6 +29,7 @@ const Home = ({ currentUser, tickets }: HomeProps): JSX.Element => {
           <tr>
             <th>Title</th>
             <th>Price</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -50,11 +41,11 @@ const Home = ({ currentUser, tickets }: HomeProps): JSX.Element => {
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { data } = await api(context).get('/api/tickets');
+  const { data: tickets } = await api(context).get('/api/tickets');
 
   return {
     props: {
-      tickets: data
+      tickets
     }
   };
 };
