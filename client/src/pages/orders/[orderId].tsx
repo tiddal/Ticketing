@@ -11,7 +11,7 @@ interface OrderProps {
   order: IOrder;
 }
 
-const Order = ({ currentUser, order }: OrderProps) => {
+const Order = ({ currentUser, order }: OrderProps): JSX.Element => {
 
   const [timeLeft, setTimeLeft] = useState(Math.round((new Date(order.expiresAt).getTime() - new Date().getTime()) / 1000));
   const { doRequest, errors } = useRequest({
