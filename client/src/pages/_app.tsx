@@ -6,7 +6,9 @@ const AppComponent = ({ Component, pageProps }) => {
   return (
     <div>
       <Header {...pageProps} />
-      <Component {...pageProps} />
+      <div className="container">
+        <Component {...pageProps} />
+      </div>
     </div>
   );
 };
