@@ -25,7 +25,7 @@ const Ticket = ({ ticket }: TicketProps): JSX.Element => {
       <h1>{ticket.title}</h1>
       <h4>${ticket.price.toFixed(2)}</h4>
       {errors}
-      <button className="btn btn-primary" onClick={doRequest}>Purchase</button>
+      <button className="btn btn-primary" onClick={() => doRequest()}>Purchase</button>
     </div>
   );
 };
